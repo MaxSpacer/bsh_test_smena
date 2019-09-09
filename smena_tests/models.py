@@ -74,7 +74,7 @@ class Poll(models.Model):
 
 
 def get_quest_category_type_choices():
-    CAT_TYPE_CHOICES = [(str(e.docs_type), e.docs_type) for e in QuestCategory.objects.all()]
+    CAT_TYPE_CHOICES = [(str(e.name), e.name) for e in QuestCategory.objects.all()]
     return CAT_TYPE_CHOICES
 #
 def get_quest_category_type_default():
@@ -89,8 +89,8 @@ def get_quest_category_type_default():
 
 class PollItemList(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
-    # quest_category_type = models.CharField(verbose_name="Тип документа", max_length=64, choices=get_quest_category_type_choices(), default=get_quest_category_type_default())
-    quest_category_type = models.CharField(verbose_name="категория вопросов", max_length=64, choices=[], default="")
+    quest_category_type = models.CharField(verbose_name="категории вопросов", max_length=256, choices=get_quest_category_type_choices(), default=get_quest_category_type_default())
+    # quest_category_type = models.CharField(verbose_name="категории вопросов", max_length=64, choices=[], default="")
     quest_capacity = models.PositiveIntegerField(default=1,validators=[MaxValueValidator(100), MinValueValidator(1)])
     is_emailed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -101,7 +101,7 @@ class PollItemList(models.Model):
         verbose_name_plural = ''
 
     def __str__(self):
-        return "Опрос № %s %s" % (self.id, self.poll_number)
+        return "Опрос № %s" % (self.id)
 
     def __init__(self,  *args, **kwargs):
         # int_qty = get_max_qty_quest_category(self.poll.)
