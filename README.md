@@ -1,0 +1,1 @@
+# bsh_test_smena
