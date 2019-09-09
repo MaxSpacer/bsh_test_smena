@@ -1,0 +1,78 @@
+{% block minicarousel %}
+{% load static %}
+
+
+<div class="container">
+    <div class=" d-flex flex-row align-items-center px-0">
+        <img class="customPrevBtn" src="{% static 'img/leftbtn.png'%}" alt="">
+        <div class="w-75 mx-auto flex-fill">
+                <h4 class="text-center p-2">Популярные товары</h4>
+                <div class="owl-carousel">
+                    {% for item in popular_products %}
+                        <!-- <div class="col-12 px-0 py-md-4 mh-auto card-group"> -->
+                            <!-- <div class="card" onclick="location.href='{% url 'products:product_n' item.product.id %}';" style="cursor: pointer;"> -->
+                            <div class="h-100">
+                                <div class="d-flex flex-column align-content-between h-100">
+                                    <div class="card-img-top pop-goods-image for-zoom">
+                                        <img class="img-zoom" src="{{ item.image.url }}" alt="">
+                                    </div>
+                                    <div class="card-body p-1">
+                                        <h5 class="card-title text-center m-0 p-2">{{ item.product.name }}</h5>
+                                    </div>
+                                    <div class="card-footer mt-auto p-0">
+                                        <form class="formBuyProduct bg-white text-center" action="{% url 'orders:basket_adding' %}">{% csrf_token %}
+                                            <div class="row justify-content-center">
+                                                <div class="col-4">
+                                                    <div class="card__info text-nowrap">{{ item.product.weight }} гр.</div>
+                                                    <div property="price" class="card__price text-nowrap">{{ item.product.price }} руб.</div>
+                                                </div>
+                                                <div class="col-4 col-md-6">
+                                                    <div class="d-flex flex-column flex-md-row flex-nowrap">
+                                                        <label class="sr-only" for="inlineFormInputGroupUsername2">Username</label>
+                                                        <input type="number" class="inBuyProduct form-control" placeholder="Шт." min="0" max="99" value="1" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="inBuyBtn btn btn-form flex-wrap my-2"
+                                                data-product_id="{{ item.product.id }}"
+                                                data-product_name="{{ item.product.name }}"
+                                                data-product_price="{{ item.product.price }}">
+                                                В корзину.
+                                            </button>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                            <!-- <a class="card m-0" href="{% url 'products:product_n' item.product.id %}"> -->
+                            <!-- </a> -->
+                        <!-- </div> -->
+                    {% endfor %}
+
+
+                </div>
+        </div>
+        <img class="customNextBtn" src="{% static 'img/rightbtn.png'%}" alt="">
+    </div>
+    </div>
+
+
+<!-- <div class="d-sm-none px-5 text-center">
+    <div class="owl-carousel owl-theme">
+        <img class="d-block img-fluid" src="{% static 'img/icmarkets-logo.png'%}" alt="">
+        <img class="d-block img-fluid" src="{% static 'img/alfaforex.png' %}" alt="">
+        <img class="d-block img-fluid" src="{% static 'img/bks-forex.png' %}" alt="">
+        <img class="d-block img-fluid" src="{% static 'img/logo-bz.png' %}" alt="">
+    </div>
+    <div class="owl-carousel owl-theme pt-5">
+        <img class="d-block img-fluid" src="{% static 'img/bks-forex.png' %}" alt="">
+        <img class="d-block img-fluid" src="{% static 'img/logo-bz.png' %}" alt="">
+        <img class="d-block img-fluid" src="{% static 'img/icmarkets-logo.png'%}" alt="">
+        <img class="d-block img-fluid" src="{% static 'img/alfaforex.png' %}" alt="">
+    </div>
+    <a class="btn btn-lg btn btn-outline-muted text-nowrap mt-5" href="#" role="button">Показать больше</a>
+
+</div> -->
+
+
+
+{% endblock minicarousel %}

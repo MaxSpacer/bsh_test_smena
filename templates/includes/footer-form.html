@@ -1,0 +1,43 @@
+{% load widget_tweaks %}
+{% load static %}
+{% block footer_form %}
+
+<form action="{% url 'landing:create_callme' %}" method="post">
+    {% csrf_token %}
+    <div class="mainformheader">
+        <h5 class="mainformtitle">Оставьте контакты и мы вам перезвоним.</h5>
+    </div>
+    <div class="mainformbody">
+        <div class="form row">
+            <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+                {% for error in form1.non_field_errors %}
+                {{ error }}
+                {% endfor %}
+            </div>
+            {% for field in form1 %}
+            <div class="col-12 col-md-6 my-1">
+                <label class="d-none" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% render_field field class="form-control" placeholder=field.label %}
+                <div class="{% if field.errors %} invalid{% endif %}">
+                    {% for error in field.errors %}
+                    <p class="help-block text-warning">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-form w-100 mt-2" id="id_form_footer">
+    Позвоните мне
+    </button>
+    {% comment %}
+        <button type="" href="{% if '/educations/detail/' in request.path %}
+                                {% url 'educations:create_eduorder_n' education.id %}
+                                {% endif %}"
+                                    class="btn btn-form px-5 my-2 ">
+        Отправить
+        </button>
+    {% endcomment %}
+</form>
+
+{% endblock footer_form %}

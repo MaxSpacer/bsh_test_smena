@@ -1,0 +1,151 @@
+
+
+/* // Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+    .result-card{
+        min-width: 21%;
+        /* max-width: 15%; */
+    }
+    .plan-card{
+        min-width: 21%;
+        max-width: 24%;
+    }
+    .create-callme-morfing{
+        display: none;
+    }
+
+    .for-input-spinner {
+        min-width: 130px;
+        max-width: 131px;
+    }
+}
+@media (min-width: 768px) {
+    #dropdown-menu-convert{
+        display: block;
+        position: static;
+        width: 100%;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        font-size: 1.25rem;
+    }
+  .team-img img {
+      max-height: 140px;
+  }
+    .navbar-brand img {
+        max-height: 55px;
+    }
+}
+@media (min-width: 992px) {
+    .footer .man-form{
+        background-position: bottom right;
+        background-size: contain;
+    }
+    .img-f {
+    width: inherit;
+    }
+}
+/* // Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+ }
+/* // Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .dropdown-menu{
+         position: fixed;
+         top: 9%;
+         left: 0;
+         right: 0;
+    }
+    .owl-stage {
+        display: block;
+    }
+    .text-logo{
+        font-size: 0.7rem;
+    }
+    .cart-dish{
+        max-width: 50px;
+    }
+    .team-img > p{
+        text-align: center !important;
+
+    }
+    .main-promo a{font-size: 0.8rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .img-inner a{
+        /* position: relative; */
+        font-size: 0.8rem;
+    }
+    .img-inner {
+    position: absolute;
+    bottom: 10%;
+    left: 4%;
+    font-size: 0.8rem;
+    }
+    .img-f  {
+        max-width: 100%;
+    }
+}
+/* // Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+    .nav-phone > a {
+    font-size: 2.2rem;
+    }
+    .in-event-date {
+        top: 30%;
+    }
+    .img-fl{
+        position: static;
+        /* left: 0%; */
+        /* bottom: 0px; */
+        margin: 0px !important;
+        max-width: 100%;
+    }
+    #main_nav li a{
+        /* margin-left: 3rem;
+        margin-right: 3rem;
+        border-bottom: 1px solid #f6a584; */
+
+
+        padding-left: 13%;
+        /* padding-left: 25%; */
+        font-size: 1.9rem;
+    }
+    /* .nav-justified .nav-item {
+
+        text-align: left;
+    } */
+    .navbar-brand img {
+        max-height: 45px;
+        display: inline-block;
+    }
+}
+/* // Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+    .for-input-spinner .input-group {
+        max-width: 40px;
+    }
+ }
+/* // Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) { ... }
+/* // Extra large devices (large desktops)
+// No media query since the extra-large breakpoint has no upper bound on its width
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) { ... }
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+    #navbarCollapse a{
+        font-size: 0.9rem;
+    }
+ }
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+ }
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) { ... }

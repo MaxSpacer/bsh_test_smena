@@ -1,0 +1,82 @@
+{% block header %}
+{% load static %}
+<nav class="navbar navbar-expand-md bg-menu p-1 text-light fixed-top justify-content-around">
+    <div class="navbar-brand text-nowrap m-0 p-1">
+        <a href="/">
+            <img class="" src="{% static 'img/dishes2.png' %}" alt="">
+        </a>
+    </div>
+    <div class="text-logo p-1 ml-md-3 d-none d-sm-block">
+        <div>Кафе</div>
+        <div>Хинкальная</div>
+        <div>г. Балашиха</div>
+    </div>
+
+    <div class="nav-phone text-right text-nowrap order-md-5 mr-md-3">
+        <a class="d-block" href="tel:{{ number_phone }}"><i class="fas fa-phone fa-flip-horizontal fa-fw"></i><span class="d-none d-md-inline">{{ number_phone }}</span></a>
+        <div class="d-none d-md-block">Приём заказов с 09:00 до 20:30</div>
+    </div>
+
+    <div class="btn-group order-sm-6">
+      <button type="button" class="btn dropdown-toggle p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="{% static 'img/dish.png' %}" class="img-fluid cart-dish" alt="">
+          <span id="basket_total_nmb">{{ products_total_nmb }}</span>
+      </button>
+      <div class="dropdown-menu bg-menu text-nowrap">
+          <table id="table-basket" class="table tables table-hover m-0">
+              <tbody >
+                  {% for item in products_in_basket %}
+                  <tr>
+                      <td class="text-left text-wrap">{{ item.pb_product }}</td>
+                      <td>{{ item.pb_qty }} шт.</td>
+                      <td>по {{ item.pb_price_per_item|floatformat:0 }} руб.</td>
+                      <td><a class="delete-item" href="{% url 'orders:basket_adding' %}" data-product_id="{{ item.id }}">X</a></td>
+                  </tr>
+                  {% endfor %}
+                  <tr>
+                      <td class="text-left">Итого: </td>
+                      <td></td>
+                      <td class="products-in-basket-total-price">
+                          {{ products_in_basket_total_price }} руб.
+                      </td>
+                      <td></td>
+                  </tr>
+              </tbody>
+          </table>
+          <div type="button" class="create-order btn btn-form m-2 {% if products_total_nmb == 0 %}d-no{% endif%}">Оформить заказ</div>
+      </div>
+    </div>
+    <div class="btn-group flex-md-fill align-self-md-end">
+        <button type="button" class="navbar-toggler btn dropdown-toggle p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="navbar-toggler-img show"></span>
+            <!-- <span class="navbar-toggler-close"></span> -->
+        </button>
+        <div id="dropdown-menu-convert" class="dropdown-menu bg-menu">
+            <nav id="main_nav">
+                <form class="formsfor invisible m-0" action="{% url 'orders:basket_adding' %}" method="">
+                    {% csrf_token %}
+                </form>
+                <ul class="nav justify-content-center flex-column flex-md-row">
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.path == '/' %} proactive{% endif %}" href="/">Меню</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-nowrap {% if request.path == '/aboutus/' %} proactive{% endif %}" href="/aboutus">Доставка</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if '/contacts/' in request.path %} proactive{% endif %}" href="/contacts">Контакты</a>
+                    </li>
+                    <li class="text-white py-3 px-5 d-md-none">
+                        <i class="fas fa-phone fa-flip-horizontal"></i>
+                        <span>{{ number_phone }}</span>
+                    </li>
+                    <li class="px-5 d-md-none">
+                        <button type="button" onclick="location.href='#id_form_footer';" class="btn btn-form px-3 px-sm-5">Заказать звонок</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</nav>
+
+{% endblock header %}
