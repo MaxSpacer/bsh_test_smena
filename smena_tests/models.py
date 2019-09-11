@@ -54,8 +54,9 @@ class Answer(models.Model):
 
 
 class Poll(models.Model):
+    time_limit = models.PositiveIntegerField(verbose_name="время на тест. мин", default=5)
     # poll_number = models.PositiveIntegerField(blank=True, null=True, default = 0)
-    is_emailed = models.BooleanField(default=False)
+    # is_emailed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -91,8 +92,8 @@ class PollItemList(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
     quest_category_type = models.CharField(verbose_name="категории вопросов", max_length=256, choices=get_quest_category_type_choices(), default=get_quest_category_type_default())
     # quest_category_type = models.CharField(verbose_name="категории вопросов", max_length=64, choices=[], default="")
-    quest_capacity = models.PositiveIntegerField(default=1,validators=[MaxValueValidator(100), MinValueValidator(1)])
-    is_emailed = models.BooleanField(default=False)
+    quest_capacity = models.PositiveIntegerField(verbose_name="Кол-во вопросов. %", default=100,validators=[MaxValueValidator(100), MinValueValidator(1)])
+    # is_emailed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -105,7 +106,7 @@ class PollItemList(models.Model):
 
     def __init__(self,  *args, **kwargs):
         # int_qty = get_max_qty_quest_category(self.poll.)
-        self._meta.get_field('quest_capacity').validators = [MaxValueValidator(100), MinValueValidator(1)]
+        # self._meta.get_field('quest_capacity').validators = [MaxValueValidator(100), MinValueValidator(1)]
         super(PollItemList, self).__init__(*args, **kwargs)
 
 
