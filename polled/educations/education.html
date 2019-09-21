@@ -1,0 +1,84 @@
+{% extends "wrapper.html" %}
+{% block content %}
+{% load static %}
+
+<section class="container-fluid">
+    <div class="row flex-column flex-md-row justify-content-center pt-md-5">
+        <div class="col-12 col-sm-4 col-md-2 py-4 px-5 px-md-0 py-md-0 align-top">
+            <a id="back-link" class="text-nowrap text-muted" href="{% url 'educations:educationlist_n' %}"><i class="fas fa-chevron-left text-muted pr-2"></i>Вернуться назад</a>
+        </div>
+        <div class="col-12 col-md-5">
+            <h3 class="text-center m-0 text-muted">{{ education.category }} рынок</h3>
+            <h3 class="text-center m-0">{{ education.name }}</h3>
+        </div>
+        <div class="col-12 col-md-2">
+
+        </div>
+    </div>
+    <div class="row justify-content-center pt-md-5">
+        <div class="col-12 col-md-7 col-lg-8 col-xl-5 px-5 pt-5 pb-3 p-md-0 position-relative img-container">
+                <img class="img-fl" src="{{ education.image.url }}" alt="Card image cap">
+            <div class="in-event-date px-3 py-1">
+                {{ education.format }}
+            </div>
+        </div>
+        <div class="col-12 col-md-5 col-lg-4 py-0 px-5 py-md-5 text-left">
+
+            <p class="py-1"> {{ education.description|truncatechars_html:500 }}</p>
+            <table class="py-1">
+                <tr>
+                 <td><i class="fas fa-circle dot-size align-middle"></i></td>
+                 <td class="px-2 text-nowrap">Длительность - {{ education.duration }} часов</td>
+                </tr>
+                <tr>
+                 <td><i class="fas fa-circle dot-size align-middle"></i></td>
+                 <td class="px-2 text-nowrap">Стоимость - {{ education.price }} руб</td>
+               </tr>
+                <tr>
+                 <td><i class="fas fa-circle dot-size align-middle"></i></td>
+                 <td class="px-2 text-nowrap">Доступно мест - {{ education.invites }}</td>
+               </tr>
+            </table>
+            <div class="row mx-auto justify-content-left flex-xl-nowrap pt-3">
+            <a class="btn btn-outline-light btn-lg text-nowrap btn-pink my-1" href="#" role="button">Начать обучение</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3 class="p-5 m-0 text-center">План занятий</h3>
+</section>
+
+<div class="container-fluid about-main">
+    <div class="row flex-column align-content-center justify-content-center">
+        {% for item in education.educationplanpoint_set.all %}
+        <div class="col-12 col-md-9 pt-5 px-5 px-md-0">
+            <div class="col">
+                <div class="row flex-column flex-md-row mb-4">
+                    <div class="circle-number text-center pt-1 mr-3 mb-2">{{ item.order }}</div><h3 class="p-0 m-0">{{ item.title }}</h3>
+                </div>
+            </div>
+            <div class="container m-0 p-0">
+                <div class="row m-0 p-0">
+                {% for i in item.educationplanpointlist_set.all %}
+                    <div class="col-12 col-md-4 pl-0 py-4 py-md-5 pr-4 pr-md-5">
+                        <h5 class="text-muted">
+
+
+                            {% for t in i.educationplanpoint_set.all %}
+                            {t.order}
+                            {% endfor %}
+                            .0{{ i.order }}</h5>
+                        <p>{{ i.text }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}

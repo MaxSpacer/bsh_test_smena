@@ -1,0 +1,16 @@
+<tr>
+    <td>
+        № {{ poll.id }}
+    </td>
+    <td>
+        {{ poll.time_limit }} минут.
+    </td>
+    <td>
+        {{ poll.id }}
+    </td>
+    <td>
+        <!-- <button type="button" class="btn btn-block btn-danger">Старт</button> -->
+        <a type=""  href="{% url 'polled:create_polled_order_n' poll.id %}" class="btn btn-block btn-danger">Старт</a>
+
+    </td>
+</tr>

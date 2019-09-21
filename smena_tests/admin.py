@@ -3,8 +3,15 @@ from .models import *
 # Register your models here.
 
 
+class PollItemListAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in PollItemList._meta.fields]
+admin.site.register(PollItemList, PollItemListAdmin)
+
 class PollItemListInline(admin.TabularInline):
     model = PollItemList
+    readonly_fields = ['quest_capacity_item_list_total']
+    extra = 1
+
 
 class PollAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Poll._meta.fields]
