@@ -1,44 +1,77 @@
 from django.shortcuts import render
-from .models import Polled, PolledItemList
-from smena_tests.models import Poll, PollItemList, Quest, QuestCategory
+from django.forms import modelformset_factory, Textarea
+from .models import Polled, PolledItemList, PolledItemListAnswers
+from smena_tests.models import Poll, PollItemList, Quest, QuestCategory, Answer
 from django.shortcuts import get_object_or_404
-from .forms import PooledItemsForm
+from .forms import PolledItemListAnswersForm
 # from django.urls import reverse_lazy
 from django.shortcuts import redirect
+from django.views.generic.edit import UpdateView
+import datetime
+from django.urls import reverse_lazy
+from django.utils import timezone
 
 
-def test_new(request,obj):
+def quest_formset_render(request, pk):
+    print('polled_pk-----')
+    print(pk)
     if request.user.is_authenticated:
-        print('request')
-        print(request)
-        if request.method == "POST":
-            form = PooledItemsForm(request.POST)
-            if form.is_valid():
-                pooled_item = form.save(commit=False)
-                pooled_item.polled = obj
-                # pooled_item.published_date = timezone.now()
-                pooled_item.save()
-                return redirect('/')
+        polled = get_object_or_404(Polled, pk=pk)
+        if datetime.datetime.now(tz=timezone.utc) < polled.finish_date and polled.is_done == False:
+            QuestFormSet = modelformset_factory(PolledItemListAnswers, extra=0, form=PolledItemListAnswersForm)
+            # QuestFormSet = modelformset_factory(PolledItemListAnswers, fields=("polled_answer" ,'is_selected'), extra=0)
+            if request.method == "POST":
+                form = QuestFormSet(request.POST)
+                instance = form.save()
+                j = form[0].instance.polled
+                # jj = j.instance.polled
+                print('============= j ============')
+                print(j)
+                print(type(j))
+
+                # polled_item_list_answers = PolledItemListAnswers.objects.filter(polled=pk, polled__is_answered = False)
+                total_right_answers = 0
+                total_wrong_answers = 0
+                for pila in form:
+                    if pila.instance.is_right and pila.instance.is_selected:
+                        total_right_answers += 1
+                    elif not pila.instance.is_right and pila.instance.is_selected:
+                        total_wrong_answers += 1
+
+                j.qty_rights_answers = total_right_answers
+                j.qty_wrong_answers = total_wrong_answers
+                j.is_answered = True
+                j.save()
+
+            d = PolledItemList.objects.filter(polled=polled, is_answered = False).order_by("?").first()
+            if d:
+                print('generim cherez form')
+                print(d)
+                formset = QuestFormSet(queryset=PolledItemListAnswers.objects.filter(polled=d.id))
+
+                # quest = Quest.objects.filter(polleditemlist__id=d.id))
+                quest_image = d.quest.image
+                if not quest_image:
+                    quest_image = None
+                return render(request, 'polled/create_test_new.html', {'formset': formset, 'quest_image':quest_image})
+            else:
+                polled.is_done = True
+                polled.save()
+                return render(request, 'polled/test_done.html')
         else:
-            form = PooledItemsForm()
-            return render(request, 'polled/create_test_new.html', {'form': form})
-        # return render(request, 'blog/post_edit.html', {'form': form})
-        # form = PooledItemsForm()
-        # print('authed')
-        # print('obj')
-        # # print(obj)
+            polled.is_done = True
+            polled.save()
+            return render(request, 'polled/test_done.html')
     else:
-        print('no  auth')
+        return redirect('/accounts/login/')
+
 
 def create_polled_order(request, pk):
-    # education = Education.objects.get(id=pk)
-
     session_key = request.session.session_key
     if not session_key:
         request.session.cycle_key()
 
     if request.user.is_authenticated:
-        # print('auth')
         poll = get_object_or_404(Poll, id=pk, is_active=True)
         if poll:
             pool_quests = []
@@ -62,28 +95,35 @@ def create_polled_order(request, pk):
 
             print('-----pool_quests------')
             print(pool_quests)
+            print(len(pool_quests))
+
             print('poll_items_list')
             print(poll_items_list)
-            obj, created = Polled.objects.get_or_create(polled_poll=poll,polled_user=request.user, polled_qty_quests=len(pool_quests), is_init=True)
-            # if created:
-                # polled_item_list_object, created = PolledItemList.objects.get_or_create(polled=obj)
+            obj, created = Polled.objects.get_or_create(polled_poll=poll,polled_user=request.user, polled_qty_quests=len(pool_quests), time_lim=poll.time_limit, is_init=True)
+            if created:
+                for d in pool_quests:
+                    pil = PolledItemList(polled=obj,quest=d)
+                    pil.save()
+                    answers = Answer.objects.filter(quest_f=d)
+                    # print(answers)
+                    for b in answers:
+                        bool = False
+                        if b.right:
+                            bool = True
+                        ans = PolledItemListAnswers(polled=pil, polled_answer=b, is_right = bool)
+                        ans.save()
+                print("created")
+            # print('request-2')
+            # print(request)
+            # dpil = PolledItemList.objects.filter(polled=obj, is_answered = False).order_by("?").first()
+            print('genim first')
+            # print(dpil)
+            if obj:
+                return redirect(reverse_lazy('polled:quest_formset_render_n', kwargs={'pk': obj.id}))
 
-            print('request-2')
-            print(request)
-            return test_new(request,obj)
-            # print('created')
-            # print(created)
-        # Do something for logged-in users.
+                # return quest_formset_render(request, dpil.id)
+            else:
+                return redirect('/')
     else:
-        return print('no  auth')
-        # Do something for anonymous users.
-
-        # if not request.user.is_authenticated():
-        #     return redirect('/')
-        # return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
-        # if not created:
-            # print("asd")
-
-    # print(request)
-    # return render(request, 'polled/polled.html', locals())
-    # return reverse_lazy('polled:test_new_n')
+        return redirect('/accounts/login/')
+        # return print('no  auth')

@@ -20,9 +20,10 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    path('nested_admin/', include('nested_admin.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', include('landing.urls'), name='test'),
+    path('', include('smena_tests.urls'), name='test'),
     path('polled/', include('polled.urls')),
 
 ]

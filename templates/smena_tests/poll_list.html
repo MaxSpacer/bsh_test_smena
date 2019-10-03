@@ -1,0 +1,21 @@
+{% extends "wrapper.html" %}
+{% block content %}
+{% load static %}
+<section class="container-fluid p-0">
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Номер теста</th>
+          <th scope="col">Время на тест</th>
+          <th scope="col">Кол-во вопросов</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for poll in queryset %}
+          {% include 'smena_tests/polls.html' %}
+          {% endfor %}
+      </tbody>
+    </table>
+</section>
+{% endblock content %}

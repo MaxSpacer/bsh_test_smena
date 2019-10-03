@@ -1,9 +1,28 @@
 {% extends "wrapper.html" %}
 
 {% block content %}
-    <h1>New post</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
+<section class="container-fluid">
+    <div class="p-3 text-center">
+        <img class="img-fluid" src="{{ quest_image.url }}" alt="Вопрос без иллюстрации">
+    </div>
+    <!-- <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
+    </form> -->
+    <form method="post">{% csrf_token %}
+    {{ formset.management_form }}
+    {% for form in formset %}
+        <table class="select-label-form-row">
+            <tr class="">
+            {% for field in form %}
+                <td>
+                    {{ field }}
+                </td>
+            {% endfor %}
+            </tr>
+        </table>
+
+    {% endfor %}
+    <button type="submit" class="save btn btn-default">Save</button>
     </form>
+</section>
 {% endblock %}

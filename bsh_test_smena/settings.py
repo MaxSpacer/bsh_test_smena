@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'landing.apps.LandingConfig',
     'polled',
     'accounts',
+    'nested_admin',
+
 ]
 
 MIDDLEWARE = [

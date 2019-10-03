@@ -20,12 +20,9 @@ class QuestCategory(models.Model):
 
 
 class Quest(models.Model):
-    title = models.TextField('заголовок вопроса', max_length=128, blank=True, null=True, default=None)
+    title = models.TextField('заголовок вопроса', blank=True, null=True, default=None)
     category = models.ForeignKey(QuestCategory, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None, verbose_name='категория вопроса')
     image = models.ImageField('рисунок для вопроса',upload_to='quest_images/', blank=True)
-    # weight = models.IntegerField('вес',default=0)
-    # description = models.TextField('описание', blank=True, null=True, default=None)
-    # popular = models.BooleanField('популярные товары', default=False)
     is_active = models.BooleanField('активен?',default=True)
     created = models.DateTimeField(auto_now_add=True , auto_now=False)
     updated = models.DateTimeField(auto_now_add=False , auto_now=True)
@@ -41,7 +38,6 @@ class Quest(models.Model):
 class Answer(models.Model):
     quest_f = models.ForeignKey(Quest, on_delete=models.CASCADE, blank=True, null=True, default=None)
     answer_text = models.TextField(verbose_name="текст ответа", default="", blank=True, null=True)
-    # answer_text = models.CharField(verbose_name="текст ответа", default="", max_length=64, blank=False, null=True)
     right = models.BooleanField('верный?',default=False)
     created = models.DateTimeField(auto_now_add=True , auto_now=False)
     updated = models.DateTimeField(auto_now_add=False , auto_now=True)
