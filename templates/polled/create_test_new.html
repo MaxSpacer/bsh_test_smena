@@ -3,26 +3,32 @@
 {% block content %}
 <section class="container-fluid">
     <div class="p-3 text-center">
-        <img class="img-fluid" src="{{ quest_image.url }}" alt="Вопрос без иллюстрации">
+        <img class="img-fluid quest-image" src="{{ quest_image.url }}" alt="Вопрос без иллюстрации">
     </div>
-    <!-- <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-    </form> -->
     <form method="post">{% csrf_token %}
     {{ formset.management_form }}
+    <table class="select-label-form-row table table-hover">
     {% for form in formset %}
-        <table class="select-label-form-row">
             <tr class="">
             {% for field in form %}
                 <td>
-                    {{ field }}
+                    {% if field.label == 'Polled answer' %}
+                        {% for item in quest.answer_set.all%}
+                            {% if item.id == field.value %}
+                                {{item.answer_text}}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
                 </td>
             {% endfor %}
             </tr>
-        </table>
-
     {% endfor %}
-    <button type="submit" class="save btn btn-default">Save</button>
+    </table>
+    <div class="text-center">
+        <button type="submit" class="btn btn-lg btn-warning px-5">Ответить</button>
+    </div>
     </form>
 </section>
 {% endblock %}

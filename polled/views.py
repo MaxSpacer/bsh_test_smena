@@ -4,7 +4,6 @@ from .models import Polled, PolledItemList, PolledItemListAnswers
 from smena_tests.models import Poll, PollItemList, Quest, QuestCategory, Answer
 from django.shortcuts import get_object_or_404
 from .forms import PolledItemListAnswersForm
-# from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic.edit import UpdateView
 import datetime
@@ -19,17 +18,11 @@ def quest_formset_render(request, pk):
         polled = get_object_or_404(Polled, pk=pk)
         if datetime.datetime.now(tz=timezone.utc) < polled.finish_date and polled.is_done == False:
             QuestFormSet = modelformset_factory(PolledItemListAnswers, extra=0, form=PolledItemListAnswersForm)
-            # QuestFormSet = modelformset_factory(PolledItemListAnswers, fields=("polled_answer" ,'is_selected'), extra=0)
             if request.method == "POST":
                 form = QuestFormSet(request.POST)
                 instance = form.save()
+                print(instance)
                 j = form[0].instance.polled
-                # jj = j.instance.polled
-                print('============= j ============')
-                print(j)
-                print(type(j))
-
-                # polled_item_list_answers = PolledItemListAnswers.objects.filter(polled=pk, polled__is_answered = False)
                 total_right_answers = 0
                 total_wrong_answers = 0
                 for pila in form:
@@ -48,12 +41,11 @@ def quest_formset_render(request, pk):
                 print('generim cherez form')
                 print(d)
                 formset = QuestFormSet(queryset=PolledItemListAnswers.objects.filter(polled=d.id))
-
-                # quest = Quest.objects.filter(polleditemlist__id=d.id))
                 quest_image = d.quest.image
+                quest = d.quest
                 if not quest_image:
                     quest_image = None
-                return render(request, 'polled/create_test_new.html', {'formset': formset, 'quest_image':quest_image})
+                return render(request, 'polled/create_test_new.html', {'formset': formset, 'quest_image':quest_image, 'quest':quest})
             else:
                 polled.is_done = True
                 polled.save()
@@ -113,15 +105,9 @@ def create_polled_order(request, pk):
                         ans = PolledItemListAnswers(polled=pil, polled_answer=b, is_right = bool)
                         ans.save()
                 print("created")
-            # print('request-2')
-            # print(request)
-            # dpil = PolledItemList.objects.filter(polled=obj, is_answered = False).order_by("?").first()
             print('genim first')
-            # print(dpil)
             if obj:
                 return redirect(reverse_lazy('polled:quest_formset_render_n', kwargs={'pk': obj.id}))
-
-                # return quest_formset_render(request, dpil.id)
             else:
                 return redirect('/')
     else:

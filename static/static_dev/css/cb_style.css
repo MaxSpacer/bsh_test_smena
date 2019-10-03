@@ -8,6 +8,16 @@
     #f5f5f5;
 }
 /* formset render */
+.select-label-form-row tr td:nth-child(3n+3) {
+    display: none;
+}
+.select-label-form-row tr td:nth-child(3n+2) {
+    width: 15px;
+    text-align: center;
+}
+.quest-image{
+        max-height: 300px;
+}
 /* .select-label-form-row select{
     display: block;
     max-width: 900px;
