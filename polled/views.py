@@ -25,15 +25,32 @@ def quest_formset_render(request, pk):
                 j = form[0].instance.polled
                 total_right_answers = 0
                 total_wrong_answers = 0
+                total_answers = 0
                 for pila in form:
+                    total_answers += 1
                     if pila.instance.is_right and pila.instance.is_selected:
                         total_right_answers += 1
+                    elif not pila.instance.is_right and not pila.instance.is_selected:
+                        total_right_answers += 1
+                    elif pila.instance.is_right and not pila.instance.is_selected:
+                        total_wrong_answers += 1
                     elif not pila.instance.is_right and pila.instance.is_selected:
                         total_wrong_answers += 1
+                print('total_answers----')
+                print(total_answers)
 
                 j.qty_rights_answers = total_right_answers
                 j.qty_wrong_answers = total_wrong_answers
                 j.is_answered = True
+
+                # perc = total_answers/100*total_right_answers
+                perc = round((total_right_answers/total_answers)*100)
+
+                j.polled_item_list_bal_procent = perc
+                print("perc")
+                print(perc)
+                print(j)
+
                 j.save()
 
             d = PolledItemList.objects.filter(polled=polled, is_answered = False).order_by("?").first()

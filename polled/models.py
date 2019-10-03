@@ -3,6 +3,7 @@ from smena_tests.models import Poll, Quest, Answer
 from django.contrib.auth.models import User
 import datetime
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 # import datetime
 
 datetime.datetime.now(tz=timezone.utc) # you can use this value
@@ -11,6 +12,7 @@ class Polled(models.Model):
     polled_poll = models.ForeignKey(Poll, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
     polled_user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
     polled_qty_quests = models.PositiveSmallIntegerField('Кол-во вопросов', blank=True, null=True, default = 0)
+    polled_total_perc = models.PositiveSmallIntegerField(verbose_name="общий бал. %", default=0,validators=[MaxValueValidator(100), MinValueValidator(1)])
     time_lim = models.PositiveIntegerField(verbose_name="время на тест. мин", default=0)
     # qwests_qty_total = models.PositiveIntegerField(blank=True, null=True)
     is_init = models.BooleanField(default=True)
@@ -39,6 +41,7 @@ class Polled(models.Model):
 class PolledItemList(models.Model):
     polled = models.ForeignKey(Polled, on_delete=models.CASCADE, max_length=128, blank=True, null=True, default=None)
     quest = models.ForeignKey(Quest, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
+    polled_item_list_bal_procent = models.PositiveSmallIntegerField(verbose_name="Бал. %", default=0,validators=[MaxValueValidator(100), MinValueValidator(1)])
     qty_rights_answers = models.PositiveSmallIntegerField('Кол-во правильных ответов', blank=True, null=True, default = 0)
     qty_wrong_answers = models.PositiveSmallIntegerField('Кол-во не правильных ответов', blank=True, null=True, default = 0)
     is_answered = models.BooleanField(default=False)
