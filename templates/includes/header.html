@@ -11,14 +11,30 @@
           </button>
 
           <div class="collapse navbar-collapse" id="navbarsExample03">
-            <ul class="navbar-nav mr-auto">
-              <!-- <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+              {% if not time_for_js_countdown %}
+              <ul class="navbar-nav d-none">
+              {% else %}
+              <ul class="navbar-nav mx-auto">
+              {% endif %}
+            <!-- <ul class="navbar-nav mx-auto {% if not '/polled/quest_formset_render/' in request.path %}d-none{% endif %}"> -->
+              <!-- <li class="nav-item active time-for-countdown">
+                {{time_for_countdown}}
               </li> -->
+
+                  <li class="nav-item">
+                      <div id="py-to-js-date" class="display-none">{{time_for_js_countdown.isoformat}}</div>
+                  </li>
+                  <li class="nav-item">
+                      <div class="time_countdown px-2">
+                          Время на тест:
+                      </div>
+                  </li>
+                  <li class="nav-item">
+                      <div id="time_countdown"></div>
+                  </li>
+              </div>
+
               <!-- <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link disabled" href="#">Disabled</a>
               </li> -->
               <!-- <li class="nav-item dropdown">
@@ -30,7 +46,7 @@
                 </div>
               </li> -->
             </ul>
-            <div class="">
+            <div class="ml-auto">
                    {% if user.is_authenticated %}
                      <div>
                          <a href="{% url 'logout'%}?next={{request.path}}">{{ user.get_username }}</a>

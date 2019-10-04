@@ -11,6 +11,11 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 
 
+def polled_itog(request, pk):
+    polled = get_object_or_404(Polled, pk=pk)
+    return render(request, 'polled/test_done.html', {'polled': polled})
+
+
 def quest_formset_render(request, pk):
     print('polled_pk-----')
     print(pk)
@@ -38,39 +43,40 @@ def quest_formset_render(request, pk):
                         total_wrong_answers += 1
                 print('total_answers----')
                 print(total_answers)
-
                 j.qty_rights_answers = total_right_answers
                 j.qty_wrong_answers = total_wrong_answers
                 j.is_answered = True
-
-                # perc = total_answers/100*total_right_answers
                 perc = round((total_right_answers/total_answers)*100)
-
                 j.polled_item_list_bal_procent = perc
                 print("perc")
                 print(perc)
-                print(j)
-
                 j.save()
-
+                polled.save()
             d = PolledItemList.objects.filter(polled=polled, is_answered = False).order_by("?").first()
             if d:
                 print('generim cherez form')
                 print(d)
-                formset = QuestFormSet(queryset=PolledItemListAnswers.objects.filter(polled=d.id))
+                formset = QuestFormSet(queryset=PolledItemListAnswers.objects.filter(polled=d.id).order_by("?"))
                 quest_image = d.quest.image
                 quest = d.quest
                 if not quest_image:
                     quest_image = None
-                return render(request, 'polled/create_test_new.html', {'formset': formset, 'quest_image':quest_image, 'quest':quest})
+                time_for_js_countdown = polled.finish_date
+                polled_for_context = polled
+                return render(request, 'polled/create_test_new.html', {'formset': formset, 'quest_image':quest_image, 'quest':quest, 'polled_for_context':polled_for_context, 'time_for_js_countdown':time_for_js_countdown})
             else:
                 polled.is_done = True
+                print('======test')
+                print(polled.polled_total_perc)
                 polled.save()
-                return render(request, 'polled/test_done.html')
+                return redirect(reverse_lazy('polled:polled_itog_n', kwargs={'pk': polled.id}))
+
         else:
             polled.is_done = True
+            print('======test2')
+            print(polled.polled_total_perc)
             polled.save()
-            return render(request, 'polled/test_done.html')
+            return redirect(reverse_lazy('polled:polled_itog_n', kwargs={'pk': polled.id}))
     else:
         return redirect('/accounts/login/')
 
@@ -105,16 +111,16 @@ def create_polled_order(request, pk):
             print('-----pool_quests------')
             print(pool_quests)
             print(len(pool_quests))
-
             print('poll_items_list')
             print(poll_items_list)
-            obj, created = Polled.objects.get_or_create(polled_poll=poll,polled_user=request.user, polled_qty_quests=len(pool_quests), time_lim=poll.time_limit, is_init=True)
+            l = int(poll.time_limit)
+            finish_date = datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(minutes=l)
+            obj, created = Polled.objects.get_or_create(polled_poll=poll,polled_user=request.user, polled_qty_quests=len(pool_quests), time_lim=l, finish_date=finish_date, is_init=True)
             if created:
                 for d in pool_quests:
                     pil = PolledItemList(polled=obj,quest=d)
                     pil.save()
                     answers = Answer.objects.filter(quest_f=d)
-                    # print(answers)
                     for b in answers:
                         bool = False
                         if b.right:
@@ -129,4 +135,3 @@ def create_polled_order(request, pk):
                 return redirect('/')
     else:
         return redirect('/accounts/login/')
-        # return print('no  auth')

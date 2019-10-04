@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'smena_tests',
-    'landing.apps.LandingConfig',
-    'polled',
+    'polled.apps.PolledConfig',
     'accounts',
     'nested_admin',
 
@@ -143,7 +142,7 @@ EMAIL_HOST_USER = "info@oxaih.ru"
 EMAIL_HOST_PASSWORD = "In123456"
 EMAIL_USE_SSL = True
 #uncomment
-# try:
-#     from .settings_prod import *
-# except:
-#     pass
+try:
+    from .settings_prod import *
+except:
+    pass

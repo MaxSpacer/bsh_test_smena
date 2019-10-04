@@ -2,6 +2,24 @@
 
 {% block content %}
 <section class="container-fluid">
-    <h1 class="text-center">Данный тест для вас закончен!</h1>
+    <h1 class="text-center">Тест {{ polled.id }} для вас закончен!</h1>
+    <table class="mx-auto" style="font-size: 1.3rem;">
+        <tr>
+            <td class="px-3">
+            Кол-во вопросов в тесте:
+            </td>
+            <td class="px-3">
+            {{ polled.polled_qty_quests }}
+            </td>
+        </tr>
+        <tr>
+            <td class="px-3">
+                Ваш бал за тест:
+            </td>
+            <td class="px-3">
+                {{ polled.polled_total_perc }}
+            </td>
+        </tr>
+    </table>
 </section>
 {% endblock %}

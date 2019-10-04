@@ -23,6 +23,7 @@ urlpatterns = [
 	# path('create_polled_item/<pk>/', views.create_polled_item, name='create_polled_item_n'),
     # path('quest_formset/<pk>/', views.quest_formset, name='quest_formset_n'),
     # path('receive_formset_data/<pk>/', views.receive_formset_data, name='receive_formset_data_n'),
+    path('polled_itog/<pk>/', views.polled_itog, name='polled_itog_n'),
     path('quest_formset_render/<pk>/', views.quest_formset_render, name='quest_formset_render_n'),
 	path('generate_test_order/<pk>/', views.create_polled_order, name='create_polled_order_n'),
 

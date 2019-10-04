@@ -18,6 +18,13 @@
 .quest-image{
         max-height: 300px;
 }
+#time_countdown, .time_countdown{
+    color: #007bff;
+    font-size: 1.5rem;
+}
+#py-to-js-date{
+    display: none;
+}
 /* .select-label-form-row select{
     display: block;
     max-width: 900px;

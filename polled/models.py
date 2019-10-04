@@ -33,9 +33,16 @@ class Polled(models.Model):
         super(Polled, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        print('--------time-----------')
-        l = int(self.time_lim)
-        self.finish_date = datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(minutes=l)
+        pil = PolledItemList.objects.filter(polled=self)
+        if pil:
+            qty_pils = pil.count()
+            percent_on_quest = 100/qty_pils
+            global_total_bal = 0
+            for p in pil:
+                g = (percent_on_quest/100)*p.polled_item_list_bal_procent
+                print(g)
+                global_total_bal += g
+            self.polled_total_perc = global_total_bal
         super(Polled, self).save(*args, **kwargs)
 
 class PolledItemList(models.Model):
