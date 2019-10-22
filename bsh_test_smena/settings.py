@@ -131,14 +131,14 @@ os.path.join(BASE_DIR, 'static', 'media'),
 os.path.join(BASE_DIR, 'static', 'static_dev'),
 )
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = '1025'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "info@oxaih.ru"
-EMAIL_HOST_PASSWORD = "In123456"
-EMAIL_USE_SSL = True
+# EMAIL_HOST = 'smtp.yandex.ru'
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = "info@oxaih.ru"
+# EMAIL_HOST_PASSWORD = "In123456"
+# EMAIL_USE_SSL = True
 
 #uncomment
 try:
