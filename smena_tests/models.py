@@ -3,6 +3,8 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.shortcuts import get_object_or_404
+# from django import forms
+# from django.forms import HiddenInput
 
 
 class QuestCategory(models.Model):
@@ -52,7 +54,7 @@ class Answer(models.Model):
 
 class Poll(models.Model):
     time_limit = models.PositiveIntegerField(verbose_name="время на тест. мин", default=5)
-    qwests_qty_total = models.PositiveIntegerField(blank=True, null=True)
+    qwests_qty_total = models.PositiveIntegerField(verbose_name="всего вопросов в тесте", null=True)
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -68,29 +70,15 @@ class Poll(models.Model):
         super(Poll, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        if self.id:
-            ss = PollItemList.objects.filter(poll = self)
-            s_val = 0
-            for s in ss:
-                s_val += s.quest_capacity_item_list_total
-            self.qwests_qty_total = s_val
+        # if self.id:
+        #     ss = PollItemList.objects.filter(poll = self)
+        #     s_val = 0
+        #     for s in ss:
+        #         s_val += s.quest_capacity_item_list_total
+        #     self.qwests_qty_total = s_val
         super(Poll, self).save(*args, **kwargs)
 
 
-def get_quest_category_type_choices():
-    CAT_TYPE_CHOICES = [(str(e.name), e.name) for e in QuestCategory.objects.all()]
-    # CAT_TYPE_CHOICES = []
-    # loc_qty_quest = get_object_or_404(QuestCategory, name=self.quest_category_type)
-    # for e in QuestCategory.objects.all():
-    #     # list = []
-    #     loc_quests_local = Quest.objects.filter(category = e.id)
-    #     k = e.name
-    #     v = e.name + loc_quests_local.id
-    #     # dict.update({k: v})
-    #     CAT_TYPE_CHOICES.append([k,v])
-    #     # CAT_TYPE_CHOICES.append(dict)
-    # print(CAT_TYPE_CHOICES)
-    return CAT_TYPE_CHOICES
 #
 # def get_quest_category_type_default():
 #     def_value = QuestCategory.objects.filter().first()
@@ -103,10 +91,14 @@ def get_quest_category_type_choices():
 #     return default
 
 class PollItemList(models.Model):
+
     poll = models.ForeignKey(Poll, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
-    quest_category_type = models.CharField(verbose_name="категории вопросов", max_length=256, choices=get_quest_category_type_choices())
+    # quest_category_type = models.ForeignKey(QuestCategory, verbose_name="категории вопросов", on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
+    quest_category_type = models.CharField(verbose_name="категории вопросов", max_length=128, choices=None)
+    # quest_category_title = models.CharField(max_length=128, blank=True, null=True, default=None)
+    quest_category_title = models.CharField(max_length=128)
     # quest_category_type = models.CharField(verbose_name="категории вопросов", max_length=64, choices=[], default="")
-    quest_capacity_item_list_procent = models.PositiveIntegerField(verbose_name="Кол-во вопросов. %", default=100,validators=[MaxValueValidator(100), MinValueValidator(1)])
+    quest_capacity_item_list_procent = models.PositiveIntegerField(verbose_name="Кол-во вопросов. %", default=100, validators=[MaxValueValidator(100), MinValueValidator(1)])
     quest_capacity_item_list_total = models.PositiveIntegerField(verbose_name="текущее кол-во вопросов", default=0)
     # is_emailed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -120,14 +112,38 @@ class PollItemList(models.Model):
         return "Item List № %s" % (self.id)
 
     def __init__(self,  *args, **kwargs):
-        # int_qty = get_max_qty_quest_category(self.poll.)
-        # self._meta.get_field('quest_capacity').validators = [MaxValueValidator(100), MinValueValidator(1)]
+        def get_quest_category_type_choices():
+            CAT_TYPE_CHOICES = []
+            pp = QuestCategory.objects.all()
+            print(pp)
+            for e in pp:
+                y = e.name
+                x = Quest.objects.filter(category=e).count()
+                list = []
+                list = [str(x),y]
+                CAT_TYPE_CHOICES.append(list)
+            return CAT_TYPE_CHOICES
+        self._meta.get_field('quest_category_type').choices = get_quest_category_type_choices()
+        # self._meta.get_field('quest_category_title').widget = forms.HiddenInput()
+        # self._meta.get_field('quest_category_title').attrs={'type' : 'hidden'})
         super(PollItemList, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        quest_cat = get_object_or_404(QuestCategory, name=self.quest_category_type)
-        quests_local = Quest.objects.filter(category = quest_cat).count()
-        self.quest_capacity_item_list_total = quests_local
+        # qu =  PollItemList.objects.filter(poll=self.poll)
+        # n = 0
+        # n += self.quest_capacity_item_list_total
+        # print('n')
+        # print(n)
+        # for quu in qu:
+        #     n += quu.quest_capacity_item_list_total
+        #
+        # po = get_object_or_404(Poll, id=self.poll.id)
+        # po.polled_qty_quests = n
+        # print('n+')
+        # print(n)
+        # po.save
+        # quests_local = Quest.objects.filter(category = quest_cat).count()
+        # self.quest_capacity_item_list_total = quests_local
         super(PollItemList, self).save(*args, **kwargs)
 
 

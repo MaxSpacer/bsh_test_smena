@@ -10,7 +10,7 @@
     </td>
     <td>
         <!-- <button type="button" class="btn btn-block btn-danger">Старт</button> -->
-        <a type=""  href="{% url 'polled:create_polled_order_n' poll.id %}" class="btn btn-block btn-danger">Старт</a>
+        <a type="" title="После старта теста, у вас не будет возможности вернуться к предыдущему ответу!"  href="{% url 'polled:create_polled_order_n' poll.id %}" class="btn btn-block btn-danger">Старт</a>
 
     </td>
 </tr>

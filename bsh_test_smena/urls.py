@@ -18,6 +18,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+admin.site.site_header = "BSH test smena portal"
+admin.site.site_title = "BSH test smena Admin portal"
+admin.site.index_title = "Welcome to BSH test smena portal"
 
 urlpatterns = [
     path('nested_admin/', include('nested_admin.urls')),
@@ -25,7 +28,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('smena_tests.urls'), name='test'),
     path('polled/', include('polled.urls')),
-
 ]
 if settings.DEBUG:
     urlpatterns += static(

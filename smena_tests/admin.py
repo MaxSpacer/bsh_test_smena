@@ -1,20 +1,40 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
+from django.utils.safestring import SafeText
 
-
-class PollItemListAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in PollItemList._meta.fields]
-admin.site.register(PollItemList, PollItemListAdmin)
+# class PollItemListAdmin(admin.ModelAdmin):
+#     list_display = [field.name for field in PollItemList._meta.fields]
+# admin.site.register(PollItemList, PollItemListAdmin)
 
 class PollItemListInline(admin.TabularInline):
     model = PollItemList
-    readonly_fields = ['quest_capacity_item_list_total']
+    fields = [
+    'quest_category_type',
+    'quest_category_title',
+    'quest_capacity_item_list_total',
+    ]
     extra = 1
 
 
 class PollAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Poll._meta.fields]
+    class Media:
+        js = (
+        'admin/js/vendor/jquery/jquery.min.js',
+        'admin/js/jquery.init.js',
+        'js/admin/my_own_admin.js',
+        )
+        css = {
+             'all': ('css/admin/my_own_admin.css',)
+        }
+    list_display = [
+    'id',
+    'time_limit',
+    'qwests_qty_total',
+    ]
+    # readonly_fields = [
+    # # 'qwests_qty_total',
+    # ]
     inlines = [PollItemListInline]
 admin.site.register(Poll, PollAdmin)
 

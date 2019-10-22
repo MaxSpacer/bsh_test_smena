@@ -4,51 +4,67 @@ from smena_tests.models import Quest, Answer
 import nested_admin
 from django.conf import settings
 
-# Register your models here.
-# class PolledItemListInline(admin.TabularInline):
-#     model = PolledItemList
-#     readonly_fields = [field.name for field in PolledItemList._meta.fields]
-
-# class PolledAdmin(admin.ModelAdmin):
-#     list_display = [field.name for field in Polled._meta.fields]
-#     inlines = [PolledItemListInline]
-# admin.site.register(Polled, PolledAdmin)
-
-
 
 class PolledItemListAnswersInline(nested_admin.NestedTabularInline):
-    readonly_fields = [field.name for field in PolledItemListAnswers._meta.fields]
     model = PolledItemListAnswers
+    verbose_name = "вариант ответов"
+    verbose_name_plural = "варианты ответов"
+    readonly_fields = [
+    'polled_answer',
+    'is_right',
+    'is_selected',
+    ]
     extra = 0
+    classes = ['collapse']
 
 class PolledItemListInline(nested_admin.NestedTabularInline):
     model = PolledItemList
+    verbose_name = "вопрос"
+    verbose_name_plural = "вопросы"
     inlines = [PolledItemListAnswersInline,]
-    readonly_fields = [field.name for field in PolledItemList._meta.fields]
+    readonly_fields = [
+    'quest',
+    'polled_item_list_bal_procent',
+    'qty_rights_answers',
+    'qty_wrong_answers',
+    'is_answered',
+    ]
     extra = 0
+    classes = ['collapse']
 
 class PolledAdmin(nested_admin.NestedModelAdmin):
     class Media:
-        # js = ('js/admin/jquery.js','js/admin/my_own_admin.js',)
-        js = ('js/admin/jquery.js',)
+        js = (
+        'admin/js/vendor/jquery/jquery.min.js',
+        'admin/js/jquery.init.js',
+        'js/admin/my_own_admin.js',
+        )
         css = {
              'all': ('css/admin/my_own_admin.css',)
         }
-    list_display = [field.name for field in Polled._meta.fields]
-
-    # list_display = [field.name for field in Polled._meta.fields]
+    list_display = [
+    'polled_poll',
+    'polled_user',
+    'polled_qty_quests',
+    'polled_total_perc',
+    'time_lim',
+    'is_done',
+    ]
+    readonly_fields = [
+    'polled_poll',
+    'polled_user',
+    'polled_qty_quests',
+    'polled_total_perc',
+    'time_lim',
+    'is_done',
+    'finish_date',
+    ]
+    exclude = ['is_init',]
     inlines = [PolledItemListInline,]
-
+    search_fields = ('polled_poll__id', 'polled_user__username', )
 admin.site.register(Polled, PolledAdmin)
 
-class PolledItemListAnswersAdmin(nested_admin.NestedModelAdmin):
-    # list_display = [field.name for field in PolledItemListAnswers._meta.fields]
-    readonly_fields = [field.name for field in PolledItemListAnswers._meta.fields]
-admin.site.register(PolledItemListAnswers, PolledItemListAnswersAdmin)
 
-
-
-
-    # fields = ('polled', 'quest',)
-
-    # list_display = [field.name for field in Poll._meta.fields]
+# class PolledItemListAnswersAdmin(nested_admin.NestedModelAdmin):
+#     readonly_fields = [field.name for field in PolledItemListAnswers._meta.fields]
+# admin.site.register(PolledItemListAnswers, PolledItemListAnswersAdmin)

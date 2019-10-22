@@ -22,7 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'xqp-f8$walu=n$vx0h0t$l2!%z3r^=$lumaiwadm*!#72pc2k%'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
@@ -132,7 +131,6 @@ os.path.join(BASE_DIR, 'static', 'media'),
 os.path.join(BASE_DIR, 'static', 'static_dev'),
 )
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = '1025'
@@ -141,6 +139,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = "info@oxaih.ru"
 EMAIL_HOST_PASSWORD = "In123456"
 EMAIL_USE_SSL = True
+
 #uncomment
 try:
     from .settings_prod import *

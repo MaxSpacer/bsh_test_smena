@@ -9,6 +9,7 @@ from django.views.generic.edit import UpdateView
 import datetime
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.http import JsonResponse
 
 
 def polled_itog(request, pk):
@@ -88,22 +89,29 @@ def create_polled_order(request, pk):
 
     if request.user.is_authenticated:
         poll = get_object_or_404(Poll, id=pk, is_active=True)
-        if poll:
+        user = request.user
+        polled_user = Polled.objects.filter(polled_poll=poll, polled_user=user)
+        # polled_user =
+        if poll and not polled_user:
             pool_quests = []
             poll_items_list = PollItemList.objects.filter(poll=poll)
             for x in poll_items_list:
-                quest_category = get_object_or_404(QuestCategory, name = x.quest_category_type)
+                # print('x.quest_category_type')
+                print(x.quest_category_title)
+                quest_category = get_object_or_404(QuestCategory, name = x.quest_category_title)
                 quest_items_list_by_category = Quest.objects.filter(category=quest_category)
                 qty_quests = quest_items_list_by_category.count()
-                percent_quest_capacity = x.quest_capacity_item_list_procent
-                percented_qty = round(qty_quests/100*percent_quest_capacity)
-                if percented_qty == 0:
-                    percented_qty = 1
-                print("Общее кол-во квестов в каждой категории: {qq}\nПроцент который будем юзать из этого кол-ва:{pre} \nКол-во посчитанных квестов:{per}".format(qq=qty_quests,pre=percent_quest_capacity,per=percented_qty))
-                print('----------quest_items_list_by_category--------')
-                print(quest_items_list_by_category)
-                print('----------select_random_quests-----------')
-                select_random_quests = quest_items_list_by_category.order_by('?')[:percented_qty]
+
+                quest_capacity = x.quest_capacity_item_list_total
+                # percent_quest_capacity = x.quest_capacity_item_list_procent
+                # percented_qty = round(qty_quests/100*percent_quest_capacity)
+                # if percented_qty == 0:
+                #     percented_qty = 1
+                # print("Общее кол-во квестов в каждой категории: {qq}\nПроцент который будем юзать из этого кол-ва:{pre} \nКол-во посчитанных квестов:{per}".format(qq=qty_quests,pre=percent_quest_capacity,per=percented_qty))
+                # print('----------quest_items_list_by_category--------')
+                # print(quest_items_list_by_category)
+                # print('----------select_random_quests-----------')
+                select_random_quests = quest_items_list_by_category.order_by('?')[:quest_capacity]
                 print(select_random_quests)
                 for x in select_random_quests:
                     pool_quests.append(x)
@@ -133,5 +141,7 @@ def create_polled_order(request, pk):
                 return redirect(reverse_lazy('polled:quest_formset_render_n', kwargs={'pk': obj.id}))
             else:
                 return redirect('/')
+        else:
+            return redirect('/')
     else:
         return redirect('/accounts/login/')

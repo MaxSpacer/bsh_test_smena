@@ -9,17 +9,17 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 datetime.datetime.now(tz=timezone.utc) # you can use this value
 # Create your models here.
 class Polled(models.Model):
-    polled_poll = models.ForeignKey(Poll, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
-    polled_user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
+    polled_poll = models.ForeignKey(Poll, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None, verbose_name='опрос')
+    polled_user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None, verbose_name='тестируемый пользователь')
     polled_qty_quests = models.PositiveSmallIntegerField('Кол-во вопросов', blank=True, null=True, default = 0)
     polled_total_perc = models.PositiveSmallIntegerField(verbose_name="общий бал. %", default=0,validators=[MaxValueValidator(100), MinValueValidator(1)])
     time_lim = models.PositiveIntegerField(verbose_name="время на тест. мин", default=0)
     # qwests_qty_total = models.PositiveIntegerField(blank=True, null=True)
     is_init = models.BooleanField(default=True)
-    is_done = models.BooleanField(default=False)
+    is_done = models.BooleanField(verbose_name="пройден полностью?", default=False)
     # created = models.DateTimeField(auto_now_add=True, auto_now=False)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
-    finish_date = models.DateTimeField(auto_now_add=False, auto_now=False, blank=True, null=True, default=None)
+    finish_date = models.DateTimeField(verbose_name="дата завершения теста",auto_now_add=False, auto_now=False, blank=True, null=True, default=None)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     class Meta:
@@ -47,11 +47,11 @@ class Polled(models.Model):
 
 class PolledItemList(models.Model):
     polled = models.ForeignKey(Polled, on_delete=models.CASCADE, max_length=128, blank=True, null=True, default=None)
-    quest = models.ForeignKey(Quest, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None)
+    quest = models.ForeignKey(Quest, on_delete=models.SET_DEFAULT, verbose_name="текст вопроса", max_length=128, blank=True, null=True, default=None)
     polled_item_list_bal_procent = models.PositiveSmallIntegerField(verbose_name="Бал. %", default=0,validators=[MaxValueValidator(100), MinValueValidator(1)])
     qty_rights_answers = models.PositiveSmallIntegerField('Кол-во правильных ответов', blank=True, null=True, default = 0)
     qty_wrong_answers = models.PositiveSmallIntegerField('Кол-во не правильных ответов', blank=True, null=True, default = 0)
-    is_answered = models.BooleanField(default=False)
+    is_answered = models.BooleanField('отвечен?',default=False)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
