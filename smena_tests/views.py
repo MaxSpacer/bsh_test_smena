@@ -13,5 +13,6 @@ class HomePageView(LoginRequiredMixin, ListView):
     context_object_name = 'queryset'
 
     def get_queryset(self):
-        return Poll.objects.exclude(polled__is_init = True)
+        # return Poll.objects.exclude(polled__is_init = True)
+        return Poll.objects.filter(is_active = True)
         # return Poll.objects.exclude(polled__is_init = True, polled__polled_user = self.request.user)
