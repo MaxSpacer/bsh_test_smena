@@ -12,7 +12,7 @@ from django.utils import timezone
 from django.http import JsonResponse
 
 
-def PolledListView(request):
+def polledlistview(request):
     if request.user.is_authenticated:
         user = request.user
         context = Polled.objects.filter(polled_user=user)
