@@ -42,13 +42,18 @@ class PolledAdmin(nested_admin.NestedModelAdmin):
         css = {
              'all': ('css/admin/my_own_admin.css',)
         }
+    def get_polled_full_name(self, obj):
+        return obj
+    get_polled_full_name.short_description = 'имя опроса'
     list_display = [
+    'get_polled_full_name',
     'polled_poll',
     'polled_user',
     'polled_qty_quests',
     'polled_total_perc',
     'time_lim',
-    'is_done',
+    'created',
+    # 'is_done',
     ]
     readonly_fields = [
     'polled_poll',

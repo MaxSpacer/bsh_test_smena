@@ -1,5 +1,16 @@
 
 $(document).ready(function() {
+    // <script>
+    /* break back button */
+    // window.onload=function(){
+    //   var i=0; var previous_hash = window.location.hash;
+    //   var x = setInterval(function(){
+    //     i++; window.location.hash = "/noop/" + i;
+    //     if (i==10){clearInterval(x);
+    //       window.location.hash = previous_hash;}
+    //   },10);
+    // }
+    // </script>
     // <!-- Display the countdown timer in an element -->
     // <p id="demo"></p>
 

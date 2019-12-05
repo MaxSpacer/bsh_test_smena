@@ -12,6 +12,15 @@ from django.utils import timezone
 from django.http import JsonResponse
 
 
+def PolledListView(request):
+    if request.user.is_authenticated:
+        user = request.user
+        context = Polled.objects.filter(polled_user=user)
+        return render(request, 'polled/polled_list.html', {'polled':context})
+    else:
+        return redirect('/accounts/login/')
+
+
 def polled_itog(request, pk):
     polled = get_object_or_404(Polled, pk=pk)
     return render(request, 'polled/test_done.html', {'polled': polled})
@@ -71,7 +80,6 @@ def quest_formset_render(request, pk):
                 print(polled.polled_total_perc)
                 polled.save()
                 return redirect(reverse_lazy('polled:polled_itog_n', kwargs={'pk': polled.id}))
-
         else:
             polled.is_done = True
             print('======test2')
@@ -90,9 +98,14 @@ def create_polled_order(request, pk):
     if request.user.is_authenticated:
         poll = get_object_or_404(Poll, id=pk, is_active=True)
         user = request.user
-        polled_user = Polled.objects.filter(polled_poll=poll, polled_user=user)
-        # polled_user =
-        if poll and not polled_user:
+        polled_user = Polled.objects.filter(polled_user=user, is_done=False)
+        if polled_user:
+            for pol in polled_user:
+                pol.is_done = True
+                pol.save()
+        else:
+            pass
+        if poll:
             pool_quests = []
             poll_items_list = PollItemList.objects.filter(poll=poll)
             for x in poll_items_list:
@@ -101,7 +114,6 @@ def create_polled_order(request, pk):
                 quest_category = get_object_or_404(QuestCategory, name = x.quest_category_title)
                 quest_items_list_by_category = Quest.objects.filter(category=quest_category)
                 qty_quests = quest_items_list_by_category.count()
-
                 quest_capacity = x.quest_capacity_item_list_total
                 # percent_quest_capacity = x.quest_capacity_item_list_procent
                 # percented_qty = round(qty_quests/100*percent_quest_capacity)
@@ -115,7 +127,6 @@ def create_polled_order(request, pk):
                 print(select_random_quests)
                 for x in select_random_quests:
                     pool_quests.append(x)
-
             print('-----pool_quests------')
             print(pool_quests)
             print(len(pool_quests))

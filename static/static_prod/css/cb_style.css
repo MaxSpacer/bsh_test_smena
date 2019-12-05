@@ -25,6 +25,9 @@
 #py-to-js-date{
     display: none;
 }
+.proactive{
+    display: none;
+}
 /* .select-label-form-row select{
     display: block;
     max-width: 900px;

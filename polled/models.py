@@ -9,16 +9,16 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 datetime.datetime.now(tz=timezone.utc) # you can use this value
 # Create your models here.
 class Polled(models.Model):
-    polled_poll = models.ForeignKey(Poll, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None, verbose_name='опрос')
+    polled_poll = models.ForeignKey(Poll, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None, verbose_name='тест')
     polled_user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, max_length=128, blank=True, null=True, default=None, verbose_name='тестируемый пользователь')
     polled_qty_quests = models.PositiveSmallIntegerField('Кол-во вопросов', blank=True, null=True, default = 0)
     polled_total_perc = models.PositiveSmallIntegerField(verbose_name="общий бал. %", default=0,validators=[MaxValueValidator(100), MinValueValidator(1)])
     time_lim = models.PositiveIntegerField(verbose_name="время на тест. мин", default=0)
     # qwests_qty_total = models.PositiveIntegerField(blank=True, null=True)
     is_init = models.BooleanField(default=True)
-    is_done = models.BooleanField(verbose_name="пройден полностью?", default=False)
+    is_done = models.BooleanField(verbose_name="завершен?", default=False)
     # created = models.DateTimeField(auto_now_add=True, auto_now=False)
-    created = models.DateTimeField(auto_now_add=True, auto_now=False)
+    created = models.DateTimeField(verbose_name="дата начала теста", auto_now_add=True, auto_now=False)
     finish_date = models.DateTimeField(verbose_name="дата завершения теста",auto_now_add=False, auto_now=False, blank=True, null=True, default=None)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -66,7 +66,7 @@ class PolledItemList(models.Model):
 
 class PolledItemListAnswers(models.Model):
     polled = models.ForeignKey(PolledItemList, on_delete=models.CASCADE,blank=True, null=True, default=None)
-    polled_answer = models.ForeignKey(Answer, on_delete=models.SET_DEFAULT, blank=True, null=True, default=None, verbose_name = 'текст ответа')
+    polled_answer = models.ForeignKey(Answer, on_delete=models.SET_DEFAULT, blank=True, null=True, default=None)
     is_right = models.BooleanField(default=False, verbose_name = 'верен/неверен')
     is_selected = models.BooleanField(default=False, verbose_name = 'выбор тестируемого')
     created = models.DateTimeField(auto_now_add=True, auto_now=False)

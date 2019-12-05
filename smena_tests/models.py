@@ -53,6 +53,7 @@ class Answer(models.Model):
 
 
 class Poll(models.Model):
+    name_poll = models.CharField('Имя теста',max_length=64, blank=True, null=True, default=None)
     time_limit = models.PositiveIntegerField(verbose_name="время на тест. мин", default=5)
     qwests_qty_total = models.PositiveIntegerField(verbose_name="всего вопросов в тесте", null=True)
     is_active = models.BooleanField(default=True)
@@ -64,7 +65,7 @@ class Poll(models.Model):
         verbose_name_plural = 'тесты'
 
     def __str__(self):
-        return "Опрос № %s" % (self.id)
+        return "Тест № %s" % (self.id)
 
     def __init__(self,  *args, **kwargs):
         super(Poll, self).__init__(*args, **kwargs)

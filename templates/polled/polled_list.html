@@ -1,0 +1,44 @@
+{% extends "wrapper.html" %}
+{% block content %}
+{% load static %}
+
+
+<section class="container-fluid mb-5">
+    <div class="row">
+        <table class="table">
+        <tr>
+          <th scope="col">Имя теста</th>
+          <th scope="col">Имя опроса</th>
+          <th scope="col">Кол-во вопросов</th>
+          <th scope="col">Общий бал. %</th>
+          <th scope="col">Время на тест. мин</th>
+          <th scope="col">Дата завершения теста</th>
+        </tr>
+    {% for polled in polled %}
+        <tr>
+            <td>
+                {{polled.polled_poll}}
+            </td>
+            <td>
+                {{polled}}
+            </td>
+            <td>
+                {{polled.polled_qty_quests}}
+            </td>
+            <td>
+                {{polled.polled_total_perc}}
+            </td>
+            <td>
+                {{polled.time_lim}}
+            </td>
+            <td>
+                {{polled.finish_date}}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    </div>
+</section>
+
+{% endblock content %}

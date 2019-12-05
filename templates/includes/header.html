@@ -5,7 +5,8 @@
 
 <header>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-          <a class="navbar-brand" href="/">Список доступных тестов</a>
+          <a class="btn btn-light mr-1{% if '/quest_formset_render/' in request.path %} proactive{% endif %}" href="/">Доступные тесты</a>
+          <a class="btn btn-light mr-1{% if '/quest_formset_render/' in request.path %} proactive{% endif %}" href="{% url 'polled:polledlist_n' %}">Пройденые тесты</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>

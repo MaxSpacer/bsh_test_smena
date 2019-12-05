@@ -31,6 +31,7 @@ class PollAdmin(admin.ModelAdmin):
         return obj
     list_display = [
     'TECT',
+    'name_poll',
     'time_limit',
     'qwests_qty_total',
     ]
