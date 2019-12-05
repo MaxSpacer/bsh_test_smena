@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'smena_tests',
+    'smena_tests.apps.SmenaTestsConfig',
     'polled.apps.PolledConfig',
     'accounts',
     'nested_admin',

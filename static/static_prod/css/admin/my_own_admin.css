@@ -26,3 +26,6 @@ tbody.djn-dynamic-form-polled-polleditemlist > tr.has_original{
 tr.djn-tr{
     background-color: white;
 }
+.historylink{
+    display: none !important;
+}

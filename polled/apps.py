@@ -2,6 +2,6 @@ from django.apps import AppConfig
 
 class PolledConfig(AppConfig):
     name = 'polled'
-    # verbose_name = 'Заказы'
+    verbose_name = 'результаты'
     def ready(self):
-        import polled.signals 
+        import polled.signals

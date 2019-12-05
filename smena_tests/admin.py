@@ -27,13 +27,15 @@ class PollAdmin(admin.ModelAdmin):
         css = {
              'all': ('css/admin/my_own_admin.css',)
         }
+    def TECT(self, obj):
+        return obj
     list_display = [
-    'id',
+    'TECT',
     'time_limit',
     'qwests_qty_total',
     ]
     # readonly_fields = [
-    # # 'qwests_qty_total',
+    # 'qwests_qty_total',
     # ]
     inlines = [PollItemListInline]
 admin.site.register(Poll, PollAdmin)

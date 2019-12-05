@@ -1,5 +1,5 @@
 # DEBUG = False
-ALLOWED_HOSTS = ['10.229.0.148','localhost', '127.0.0.1','167.71.54.163']
+ALLOWED_HOSTS = ['10.229.0.148','localhost', '127.0.0.1']
 
 #settings for db on server
 # DATABASES = {

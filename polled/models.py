@@ -23,6 +23,7 @@ class Polled(models.Model):
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     class Meta:
+        # app_label = 'smena_tests'
         verbose_name = 'Пройденый опрос'
         verbose_name_plural = 'Пройденые опросы'
 
@@ -65,9 +66,9 @@ class PolledItemList(models.Model):
 
 class PolledItemListAnswers(models.Model):
     polled = models.ForeignKey(PolledItemList, on_delete=models.CASCADE,blank=True, null=True, default=None)
-    polled_answer = models.ForeignKey(Answer, on_delete=models.SET_DEFAULT, blank=True, null=True, default=None)
-    is_right = models.BooleanField(default=False)
-    is_selected = models.BooleanField(default=False)
+    polled_answer = models.ForeignKey(Answer, on_delete=models.SET_DEFAULT, blank=True, null=True, default=None, verbose_name = 'текст ответа')
+    is_right = models.BooleanField(default=False, verbose_name = 'верен/неверен')
+    is_selected = models.BooleanField(default=False, verbose_name = 'выбор тестируемого')
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
