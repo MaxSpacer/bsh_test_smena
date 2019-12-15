@@ -15,7 +15,7 @@ from django.http import JsonResponse
 def polledlistview(request):
     if request.user.is_authenticated:
         user = request.user
-        context = Polled.objects.filter(polled_user=user)
+        context = Polled.objects.filter(polled_user=user).order_by('-id')
         return render(request, 'polled/polled_list.html', {'polled':context})
     else:
         return redirect('/accounts/login/')
@@ -36,8 +36,9 @@ def quest_formset_render(request, pk):
             if request.method == "POST":
                 form = QuestFormSet(request.POST)
                 instance = form.save()
-                print(instance)
                 j = form[0].instance.polled
+                print('j')
+                print(j.polled.polled_poll)
                 total_right_answers = 0
                 total_wrong_answers = 0
                 total_answers = 0
@@ -58,10 +59,15 @@ def quest_formset_render(request, pk):
                 j.is_answered = True
                 perc = round((total_right_answers/total_answers)*100)
                 j.polled_item_list_bal_procent = perc
-                print("perc")
-                print(perc)
+                totals_pil = PolledItemList.objects.filter(polled=polled).count()
+                print('totals_pil')
+                print(totals_pil)
+                for inst_pila in instance:
+                    inst_pila.local_price = 100/len(instance)
+                    ccc = (100/totals_pil)
+                    inst_pila.global_price = ccc/len(instance)
+                    inst_pila.save()
                 j.save()
-                polled.save()
             d = PolledItemList.objects.filter(polled=polled, is_answered = False).order_by("?").first()
             if d:
                 print('generim cherez form')
@@ -73,7 +79,17 @@ def quest_formset_render(request, pk):
                     quest_image = None
                 time_for_js_countdown = polled.finish_date
                 polled_for_context = polled
-                return render(request, 'polled/create_test_new.html', {'formset': formset, 'quest_image':quest_image, 'quest':quest, 'polled_for_context':polled_for_context, 'time_for_js_countdown':time_for_js_countdown})
+                ppi = polled.polled_poll.id
+                ppn = polled.polled_poll.name_poll
+                poll_for_context = 'к тесту № ' + str(ppi) + ':' +  str(ppn)
+                return render(request, 'polled/create_test_new.html', {
+                'formset': formset,
+                'quest_image':quest_image,
+                'quest':quest,
+                'polled_for_context':polled_for_context,
+                'poll_for_context':poll_for_context,
+                 'time_for_js_countdown':time_for_js_countdown
+                 })
             else:
                 polled.is_done = True
                 print('======test')

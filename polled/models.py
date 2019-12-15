@@ -24,11 +24,11 @@ class Polled(models.Model):
 
     class Meta:
         # app_label = 'smena_tests'
-        verbose_name = 'Пройденый опрос'
-        verbose_name_plural = 'Пройденые опросы'
+        verbose_name = 'пройденный опрос'
+        verbose_name_plural = 'пройденные опросы'
 
     def __str__(self):
-        return "Пройденый опрос № %s" % (self.id)
+        return "Пройденный опрос № %s" % (self.id)
 
     def __init__(self,  *args, **kwargs):
         super(Polled, self).__init__(*args, **kwargs)
@@ -69,6 +69,8 @@ class PolledItemListAnswers(models.Model):
     polled_answer = models.ForeignKey(Answer, on_delete=models.SET_DEFAULT, blank=True, null=True, default=None)
     is_right = models.BooleanField(default=False, verbose_name = 'верен/неверен')
     is_selected = models.BooleanField(default=False, verbose_name = 'выбор тестируемого')
+    local_price = models.PositiveSmallIntegerField('Локальная ценность', blank=True, null=True, default = 0)
+    global_price = models.DecimalField('Глобальная ценность', max_digits=4, decimal_places=2, blank=True, null=True, default = 0.0)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 

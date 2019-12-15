@@ -13,6 +13,8 @@ class PolledItemListAnswersInline(nested_admin.NestedTabularInline):
     'polled_answer',
     'is_right',
     'is_selected',
+    'local_price',
+    'global_price',
     ]
     extra = 0
     classes = ['collapse']

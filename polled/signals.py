@@ -62,7 +62,7 @@ def update_bal_polled_item_list(sender, instance, created, **kwargs):
 
 
     # print('signals ok')
-    print('signals ok')
+    # print('signals ok')
 
     pass
 # def export_data_pdf(sender, instance, created, **kwargs):

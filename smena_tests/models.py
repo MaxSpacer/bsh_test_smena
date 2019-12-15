@@ -53,9 +53,9 @@ class Answer(models.Model):
 
 
 class Poll(models.Model):
-    name_poll = models.CharField('Имя теста',max_length=64, blank=True, null=True, default=None)
+    name_poll = models.CharField('Имя теста',max_length=64, blank=True, null=True, default='без имени')
     time_limit = models.PositiveIntegerField(verbose_name="время на тест. мин", default=5)
-    qwests_qty_total = models.PositiveIntegerField(verbose_name="всего вопросов в тесте", null=True)
+    qwests_qty_total = models.PositiveIntegerField(verbose_name="всего вопросов в тесте(заполняется автоматически)", null=True)
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
