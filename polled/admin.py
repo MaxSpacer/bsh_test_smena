@@ -46,9 +46,14 @@ class PolledAdmin(nested_admin.NestedModelAdmin):
         }
     def get_polled_full_name(self, obj):
         return obj
+    def get_poll_full_name(self, obj):
+        return obj.polled_poll.name_poll
+        # pass
     get_polled_full_name.short_description = 'имя опроса'
+    get_poll_full_name.short_description = 'Наименование теста'
     list_display = [
     'get_polled_full_name',
+    'get_poll_full_name',
     'polled_poll',
     'polled_user',
     'polled_qty_quests',
