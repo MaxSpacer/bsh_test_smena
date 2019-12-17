@@ -11,9 +11,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='pollitemlist',
-            name='quest_category_type',
-            field=models.ForeignKey(choices=[('Сетевая архитектура', 1), ('Взаимодействие с клиентами', 2), ('Диагностика проблем', 3), ('Диагностика проблем c HS', 4)], default='Сетевая архитектура', max_length=256, on_delete=django.db.models.deletion.SET_DEFAULT, to='smena_tests.QuestCategory', verbose_name='категории вопросов'),
-        ),
+        # migrations.AlterField(
+        #     model_name='pollitemlist',
+        #     name='quest_category_type',
+        #     field=models.ForeignKey(choices=[('Сетевая архитектура', 1), ('Взаимодействие с клиентами', 2), ('Диагностика проблем', 3), ('Диагностика проблем c HS', 4)], default='Сетевая архитектура', max_length=256, on_delete=django.db.models.deletion.SET_DEFAULT, to='smena_tests.QuestCategory', verbose_name='категории вопросов'),
+        # ),
     ]
