@@ -1,3 +1,4 @@
+var jQuery = django.jQuery, $ = jQuery;
 $(document).ready(function() {
     $("#id_qwests_qty_total").prop("readonly",true);
     function getvalues(){
