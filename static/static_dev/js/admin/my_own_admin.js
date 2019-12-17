@@ -10,7 +10,7 @@ $(document).ready(function() {
                 j += parseInt(inp.value);
         };
         pp.val(j);
-    }
+    };
     $(document).on('change', "select[name*='quest_category_type']", function(e) {
         e.preventDefault();
         var parent_v = $(this).parents("tr[id*='pollitemlist_set-']")
