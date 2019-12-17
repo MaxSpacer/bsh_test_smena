@@ -1,12 +1,12 @@
-# DEBUG = False
+DEBUG = False
 ALLOWED_HOSTS = ['10.229.0.148','localhost', '127.0.0.1']
 
 #settings for db on server
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'bti_db6',
-#         'USER': 'bti_db_user',
+#         'NAME': 'bsh_test_smena_db',
+#         'USER': 'bsh_test_smena_db_user',
 #         'PASSWORD': 'GoKxZ3&9',
 #         'HOST': 'localhost',
 #         'PORT': '',                      # Set to empty string for default.
