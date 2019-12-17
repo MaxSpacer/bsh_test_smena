@@ -116,14 +116,16 @@ class PollItemList(models.Model):
         def get_quest_category_type_choices():
             CAT_TYPE_CHOICES = []
             pp = QuestCategory.objects.all()
-            print(pp)
-            for e in pp:
-                y = e.name
-                x = Quest.objects.filter(category=e).count()
-                list = []
-                list = [str(x),y]
-                CAT_TYPE_CHOICES.append(list)
-            return CAT_TYPE_CHOICES
+            if pp:
+                for e in pp:
+                    y = e.name
+                    x = Quest.objects.filter(category=e).count()
+                    list = []
+                    list = [str(x),y]
+                    CAT_TYPE_CHOICES.append(list)
+                return CAT_TYPE_CHOICES
+            else:
+                return CAT_TYPE_CHOICES.append('none') 
         self._meta.get_field('quest_category_type').choices = get_quest_category_type_choices()
         # self._meta.get_field('quest_category_title').widget = forms.HiddenInput()
         # self._meta.get_field('quest_category_title').attrs={'type' : 'hidden'})
