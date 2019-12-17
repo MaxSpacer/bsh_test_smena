@@ -10,9 +10,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='pollitemlist',
-            name='quest_category_type',
-            field=models.CharField(choices=[('Сетевая архитектура', 'Сетевая архитектура'), ('Взаимодействие с клиентами', 'Взаимодействие с клиентами'), ('Диагностика проблем', 'Диагностика проблем'), ('Диагностика проблем c HS', 'Диагностика проблем c HS'), ('hbkhj', 'hbkhj')], default='Сетевая архитектура', max_length=256, verbose_name='категории вопросов'),
-        ),
+        # migrations.AlterField(
+        #     model_name='pollitemlist',
+        #     name='quest_category_type',
+        #     field=models.CharField(choices=[('Сетевая архитектура', 'Сетевая архитектура'), ('Взаимодействие с клиентами', 'Взаимодействие с клиентами'), ('Диагностика проблем', 'Диагностика проблем'), ('Диагностика проблем c HS', 'Диагностика проблем c HS'), ('hbkhj', 'hbkhj')], default='Сетевая архитектура', max_length=256, verbose_name='категории вопросов'),
+        # ),
     ]
